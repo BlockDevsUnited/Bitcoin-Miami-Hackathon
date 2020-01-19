@@ -64,7 +64,7 @@ contract SMStx{
         address _from = IDs[__from];
         address _to = IDs[__to];
         require(msg.sender==admin);
-       // require(balances[_from]>=amount);
+        require(balances[_from]>=amount);
         //require(_from!=address(0));
 
         // if(_to==address(0)){
