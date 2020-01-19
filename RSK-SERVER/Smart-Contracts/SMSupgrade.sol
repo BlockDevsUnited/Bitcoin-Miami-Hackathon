@@ -10,14 +10,6 @@ contract SMSUpgrade{
     mapping(bytes32=>bool) Redeemed;
     event Transfer(address to, address from, uint256 Amount);
 
-    // address[] whitelistedAddresses;
-    // uint wIndex;
-    // function getW() internal view returns(address) {
-    //     return whitelistedAddresses[wIndex];
-    // }
-    // function addAddresses(address[] _addresses){
-
-    // }
     struct Transaction{
         uint value;
         uint sender;
@@ -34,8 +26,6 @@ contract SMSUpgrade{
                     0x9553De363D3b5f50A5C10F3E289b016c7cB77742];
     uint public wIndex;
 
-
-
     uint public serverBalance;
 
     function() payable external{
@@ -43,9 +33,8 @@ contract SMSUpgrade{
     }
     function createOTPHash(bytes32 p,uint _value,uint sender) public {
         Transactions[p]=Transaction(_value,sender);
-
     }
-    
+
     function ValidateOTP(string memory s,uint _to) public{
         bytes32 p=keccak256(abi.encode(s));
         require(Redeemed[p]==false);
@@ -53,16 +42,19 @@ contract SMSUpgrade{
         transfer( T.sender,_to,T.value);
         Redeemed[p]=true;
     }
-    
-     function OTPValid(string memory s,uint _to) public view returns(bool){
+
+    function OTPValid(string memory s) public view returns(bool){
         bytes32 p=keccak256(abi.encode(s));
-        if(Transactions[p]>0){
+        if(Transactions[p].value>0){
             return true;
         }
     }
-    
-    
-    
+
+    function getHash(string memory s) public pure returns (bytes32){
+        return keccak256(abi.encode(s));
+    }
+
+
     function ip() public {
         balances[address(this)] = serverBalance;
     }
